@@ -1,12 +1,12 @@
 import IndexPage from "@/pages/Index/Index";
 
 const customBranding = {
-	companyName: "Glendowie College",
-	primaryColor: "#4a5568",
-	secondaryColor: "#ed8936",
-	logoUrl: "/glendowie-logo.svg",
+    companyName: "Glendowie College",
+    logoUrl: "/glendowie-logo.svg",
+    primaryColor: "#59d990",
+    secondaryColor: "#41a36d"
 };
 
 export default function Home() {
-	return <IndexPage branding={customBranding} />
+    return <IndexPage branding={customBranding} />;
 }
