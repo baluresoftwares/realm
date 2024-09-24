@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import "@/css/globals.css";
 
 import PageFrame from "@/components/PageFrame/PageFrame";
-import { AuthProvider } from "@/context/AuthContext";
+import { AuthProvider } from "@/context/AuthContext/AuthContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,9 +21,7 @@ return (
 	<html lang="en">
 		<body className={inter.className}>
 			<AuthProvider>
-				<PageFrame>
-					{children}
-				</PageFrame>
+				{children}
 			</AuthProvider>
 		</body>
 	</html>

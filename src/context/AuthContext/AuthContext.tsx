@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useState, useContext, ReactNode } from "react";
-import { User, AuthState, AuthContextType, ContextProps } from "@/utils/Interfaces";
+import { User, AuthState, AuthContextType, ContextProps } from "@/context/AuthContext/IAuthContext";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 const DefaultState = {
