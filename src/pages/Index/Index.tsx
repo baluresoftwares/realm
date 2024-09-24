@@ -6,7 +6,7 @@ import { Button } from "@/components/UI/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/UI/card";
 import { Input } from "@/components/UI/input";
 import { Label } from "@/components/UI/label";
-import { EyeIcon, EyeOffIcon } from 'lucide-react';
+
 
 interface BrandingProps {
     companyName: string;
@@ -22,90 +22,88 @@ const defaultBranding: BrandingProps = {
     secondaryColor: "#10b981"
 };
 
-export default function LoginPage({ branding = defaultBranding }: { branding?: BrandingProps }) {
-    const [showPassword, setShowPassword] = useState(false);
+export default function IndexPage({ branding = defaultBranding }: { branding?: BrandingProps }) {
+    const [email, setEmail] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handlePasswordlessLogin = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setIsLoading(true);
+        // Implement your passwordless login logic here
+        // This could involve sending a magic link or OTP to the user's email
+        console.log('Passwordless login initiated for:', email);
+        // Simulating API call
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        setIsLoading(false);
+    };
+
+    const handleSSOLogin = (provider: string) => {
+        // Implement your SSO login logic here
+        console.log('SSO login initiated with:', provider);
+    };
 
     return (
-        <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 overflow-hidden">
+        <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-gray-900 to-black relative overflow-hidden">
+            <div className="absolute inset-0 w-full h-full">
+                <div className="absolute top-[-10%] left-[-10%] w-[120%] h-[120%] bg-gradient-to-br from-emerald-500/30 to-teal-700/30 blur-3xl"></div>
+            </div>
+            
             <motion.div 
-                className="w-full max-w-md"
+                className="w-full max-w-md relative z-10"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
+                transition={{ duration: 0.5 }}
             >
-                <Card className="bg-gray-800/80 border-0 shadow-2xl backdrop-blur-sm">
-                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-600/10 rounded-lg" />
-                    <CardHeader className="relative z-10 space-y-1 pb-8">
-                        <motion.div 
-                            className="flex justify-center mb-6"
-                            initial={{ scale: 0.8, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            transition={{ delay: 0.2, type: "spring", stiffness: 200, damping: 15 }}
-                        >
-                            <img src={branding.logoUrl} alt={`${branding.companyName} logo`} className="h-16 w-auto" />
-                        </motion.div>
-                        <CardTitle className="text-3xl font-bold text-center text-white">{branding.companyName}</CardTitle>
-                        <CardDescription className="text-center text-gray-300">Access your account</CardDescription>
+                <Card className="bg-gray-800/60 border-gray-700/50 shadow-xl backdrop-blur-md">
+                    <CardHeader className="space-y-1 text-center">
+                        <CardTitle className="text-2xl font-bold text-white">{branding.companyName}</CardTitle>
+                        <CardDescription className="text-gray-300">Sign in to your account</CardDescription>
                     </CardHeader>
-                    <CardContent className="space-y-6 relative z-10">
-                        <motion.div 
-                            className="space-y-2"
-                            initial={{ x: -20, opacity: 0 }}
-                            animate={{ x: 0, opacity: 1 }}
-                            transition={{ delay: 0.3, duration: 0.4 }}
-                        >
-                            <Label htmlFor="email" className="text-gray-200">Email</Label>
-                            <Input id="email" type="email" placeholder="10000@gdc.school.nz" 
-                                className="bg-gray-700/50 border-gray-600 text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 transition-all duration-300" />
-                        </motion.div>
-                        <motion.div 
-                            className="space-y-2"
-                            initial={{ x: 20, opacity: 0 }}
-                            animate={{ x: 0, opacity: 1 }}
-                            transition={{ delay: 0.4, duration: 0.4 }}
-                        >
-                            <Label htmlFor="password" className="text-gray-200">Password</Label>
-                            <div className="relative">
+                    <CardContent className="space-y-4">
+                        <form onSubmit={handlePasswordlessLogin} className="space-y-4">
+                            <div className="space-y-2">
+                                <Label htmlFor="email" className="text-white">Email</Label>
                                 <Input 
-                                    id="password" 
-                                    type={showPassword ? "text" : "password"} 
-                                    className="bg-gray-700/50 border-gray-600 text-white pr-10 focus:ring-2 focus:ring-blue-500 transition-all duration-300" 
+                                    id="email" 
+                                    type="email" 
+                                    placeholder="Enter your email" 
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    required
+                                    className="bg-gray-700 border-gray-600 text-white placeholder-gray-400"
                                 />
-                                <button 
-                                    type="button" 
-                                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-white transition-colors duration-200"
-                                    onClick={() => setShowPassword(!showPassword)}
-                                >
-                                    {showPassword ? <EyeOffIcon className="h-5 w-5" /> : <EyeIcon className="h-5 w-5" />}
-                                </button>
                             </div>
-                        </motion.div>
-                    </CardContent>
-                    <CardFooter className="flex flex-col space-y-4 relative z-10">
-                        <motion.div
-                            initial={{ y: 20, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            transition={{ delay: 0.5, duration: 0.4 }}
-                        >
                             <Button 
-                                className="w-full text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300 hover:shadow-lg hover:scale-[1.02]"
+                                type="submit"
+                                className="w-full text-white font-semibold py-2 px-4 rounded transition-all duration-300 hover:opacity-90"
                                 style={{
                                     background: `linear-gradient(135deg, ${branding.primaryColor}, ${branding.secondaryColor})`,
                                 }}
+                                disabled={isLoading}
                             >
-                                Sign In
+                                {isLoading ? "Sending login link..." : "Sign in with Email"}
                             </Button>
-                        </motion.div>
-                        <motion.div 
-                            className="text-sm text-center"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 0.6, duration: 0.4 }}
-                        >
-                            <a href="#" className="font-medium hover:underline text-blue-400 hover:text-blue-300 transition-colors duration-200">
-                                Forgot your password?
+                        </form>
+                        <div className="relative">
+                            <div className="absolute inset-0 flex items-center">
+                                <span className="w-full border-t border-gray-600"></span>
+                            </div>
+                            <div className="relative flex justify-center text-xs uppercase">
+                                <span className="bg-gray-800 px-2 text-gray-400">Or continue with</span>
+                            </div>
+                        </div>
+                        <div className="grid grid-cols-3 gap-3">
+                            <Button onClick={() => handleSSOLogin('google')} variant="outline" className="bg-gray-700 border-gray-600 text-white hover:bg-gray-600">
+                                
+                            </Button>
+                        </div>
+                    </CardContent>
+                    <CardFooter className="flex flex-col space-y-4">
+                        <div className="text-sm text-center">
+                            <a href="#" className="font-medium text-cyan-300 hover:text-cyan-100 transition-colors">
+                                Can't login?
                             </a>
-                        </motion.div>
+                        </div>
                     </CardFooter>
                 </Card>
             </motion.div>
