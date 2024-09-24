@@ -1,6 +1,6 @@
 import { useAuth } from "@/context/AuthContext/AuthContext"
 
-export default function IndexPage() {
+export default function DashboardPage() {
 	const { user } = useAuth();
 
 	if (user) {
