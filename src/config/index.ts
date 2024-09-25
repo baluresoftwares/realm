@@ -1,9 +1,18 @@
 import { Google, Microsoft, Apple, GitHub } from "@mui/icons-material";
-import { BrandingProps } from "@/components/Login/Interfaces/IBranding";
+import { BrandingProps } from "@/pages/Login/Interfaces/IBranding";
+import { RealmEnumsProps } from "./Interfaces/IEnums";
 
-export const clientBranding: BrandingProps = {
-    companyName: "Grey Hat",
-    logoUrl: "blackhat.png",
+export const realmEnums: RealmEnumsProps = {
+	loginStates: {
+		initial: "initial",
+		redirecting: "redirecting",
+		verified: "verified"
+	}
+}
+
+export const realmClientBranding: BrandingProps = {
+    companyName: "Your Company",
+    logoUrl: "placeholder.webp",
     primaryColor: "#b6b6b6",
     secondaryColor: "#747474",
     theme: {

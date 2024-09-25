@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAuth } from '@/context/AuthContext/AuthContext';
 import Unauthorized from '@/components/Unauthorized/Unauthorized';
-import { AuthGuardProps } from './IAuthGuard';
+import { AuthGuardProps } from './Interfaces/IAuthGuard';
 
 const AuthGuard: React.FC<AuthGuardProps> = ({ children, requireAuth }) => {
 	const { authState } = useAuth();

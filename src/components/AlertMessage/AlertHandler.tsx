@@ -1,6 +1,6 @@
 import { Alert, AlertDescription, AlertTitle } from "@/components/UI/alert";
 import { AlertCircle, CheckCircle, Info, AlertTriangle } from "lucide-react";
-import { AlertType } from "./IAlertTypes";
+import { AlertType } from "./Interfaces/IAlertTypes";
 
 export const AlertMessage = ({ type, message }: { type: AlertType; message: string }) => {
     const icons = {

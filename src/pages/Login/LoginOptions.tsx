@@ -1,6 +1,6 @@
 import React from 'react';
 import { LoginOptionsProps } from "./Interfaces/ILogin";
-import { Button } from "../UI/button";
+import { Button } from '@/components/UI/button';
 
 const LoginOptions: React.FC<LoginOptionsProps> = ({ options, isDarkMode, onLogin }) => {
     if (!options || options.length === 0) {

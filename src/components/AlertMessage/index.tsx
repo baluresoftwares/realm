@@ -1,2 +1,2 @@
 export * from "./AlertHandler"
-export * from "./IAlertTypes"
+export * from "./Interfaces/IAlertTypes"

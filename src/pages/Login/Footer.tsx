@@ -1,5 +1,5 @@
 import { SupportLinkProps } from "./Interfaces/IFooter";
-import CopyrightDisclaimer from "../CopyrightDisclaimer/CopyrightDisclaimer";
+import CopyrightDisclaimer from "@/components/CopyrightDisclaimer/CopyrightDisclaimer";
 
 const Footer: React.FC<SupportLinkProps> = ({ isDarkMode }) => (
     <div className="text-sm text-center">

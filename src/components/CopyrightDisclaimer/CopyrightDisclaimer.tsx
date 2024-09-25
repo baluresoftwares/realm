@@ -1,5 +1,5 @@
 import React from 'react';
-import { CopyrightDisclaimerProps } from './ICopyrightDisclaimer';
+import { CopyrightDisclaimerProps } from './Interfaces/ICopyrightDisclaimer';
 
 const CopyrightDisclaimer: React.FC<CopyrightDisclaimerProps> = ({ 
 	companyName, 
