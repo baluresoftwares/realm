@@ -2,10 +2,10 @@ import { Google, Microsoft, Apple, GitHub } from "@mui/icons-material";
 import { BrandingProps } from "@/components/Login/Interfaces/IBranding";
 
 export const clientBranding: BrandingProps = {
-    companyName: "Your Company",
-    logoUrl: "placeholder.webp",
-    primaryColor: "#dadada",
-    secondaryColor: "#969696",
+    companyName: "Grey Hat",
+    logoUrl: "blackhat.png",
+    primaryColor: "#b6b6b6",
+    secondaryColor: "#747474",
     theme: {
 		type: 'light'
 	},

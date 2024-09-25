@@ -9,7 +9,7 @@ import { BrandingProps } from './Interfaces/IBranding';
 import { clientBranding } from '@/config';
 import LoginHeader from './Header';
 import LoginOptions from './LoginOptions';
-import SupportLink from './SupportLink';
+import Footer from './Footer';
 
 const darkenColor = (color: string, amount: number): string => {
     const hex = color.replace('#', '');
@@ -25,6 +25,7 @@ export default function Login(): JSX.Element {
     const [isRedirecting, setIsRedirecting] = useState(false);
     const [selectedProvider, setSelectedProvider] = useState<string | null>(null);
     const [showManualRedirect, setShowManualRedirect] = useState(false);
+    const [isVerified, setIsVerified] = useState(false);
 
     const isDarkMode = clientBranding.theme.type === 'dark';
     const darkenedPrimary = isDarkMode ? darkenColor(clientBranding.primaryColor, 175) : darkenColor(clientBranding.primaryColor, 50);
@@ -33,21 +34,36 @@ export default function Login(): JSX.Element {
     const handleLogin = (provider: string): void => {
         setSelectedProvider(provider);
         setIsRedirecting(true);
-		
-        // Simulating a redirect delay
+        
         setTimeout(() => {
-            // Implement your actual redirect logic here
-            console.log(`Redirecting to ${provider} login...`);
-
-            // If the redirect doesn't happen, show the manual redirect option
-            setShowManualRedirect(true);
-        }, 3000);
+			setShowManualRedirect(true);
+			setTimeout(() => {
+				setShowManualRedirect(false);
+				setTimeout(() => {
+					setIsVerified(true);
+				}, 300)
+			}, 1000);
+		}, 2000);
     };
 
     const handleManualRedirect = () => {
-        // Implement your manual redirect logic here
         console.log(`Manually redirecting to ${selectedProvider} login...`);
     };
+
+    const CheckMarkIcon = () => (
+        <svg className="w-16 h-16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <motion.path
+                d="M4 12.6111L8.92308 17.5L20 6.5"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                initial={{ pathLength: 0 }}
+                animate={{ pathLength: 1 }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+            />
+        </svg>
+    );
 
     return (
         <div className={`min-h-screen flex items-center justify-center p-4 relative overflow-hidden ${isDarkMode ? 'dark' : ''}`}
@@ -60,11 +76,11 @@ export default function Login(): JSX.Element {
             
             <motion.div 
                 className="w-full max-w-md relative z-10"
-                initial={{ opacity: 0, y: 65 }}
+                initial={{ opacity: 0, y: 35 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
+                transition={{ duration: 0.5 }}
             >
-                <Card className={`${isDarkMode ? 'bg-gray-900/80' : 'bg-white/70'} ${isDarkMode ? 'border-gray-500/50' : 'border-gray-200/50'} shadow-xl backdrop-blur-[2px] relative`}>
+                <Card className={`${isDarkMode ? 'bg-gray-900/80' : 'bg-white/70'} ${isDarkMode ? 'border-gray-500/50' : 'border-gray-200/50'} shadow-xl backdrop-blur-[2px] relative rounded-2xl`}>
                     <LoginHeader 
                         companyName={clientBranding.companyName}
                         logoUrl={clientBranding.logoUrl}
@@ -86,19 +102,46 @@ export default function Login(): JSX.Element {
                                         animate={{ opacity: 1 }}
                                         exit={{ opacity: 0 }}
                                         transition={{ duration: 0.3 }}
-                                        className={`absolute inset-0 flex items-center justify-center ${isDarkMode ? 'bg-gray-900/90' : 'bg-white/50'} backdrop-blur-lg rounded-lg`}
+                                        className={`absolute inset-0 flex items-center justify-center ${isDarkMode ? 'bg-gray-900/90' : 'bg-white/65'} backdrop-blur-md rounded-lg`}
                                     >
-                                        <div className="text-center">
-                                            <h1 className={`font-medium text-lg ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                                                Redirecting to {selectedProvider}
-                                            </h1>
-                                            <p className={`font-light text-xs ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                                                You will be automatically logged in upon completing verification
-                                            </p>
+                                        <motion.div 
+                                            className="text-center flex flex-col items-center justify-center h-full"
+                                            initial={{ y: 0 }}
+                                            animate={{ y: 0 }}
+                                            transition={{ duration: 0.3 }}
+                                        >
+                                            <AnimatePresence>
+                                                {!isVerified ? (
+                                                    <motion.div
+                                                        initial={{ opacity: 1 }}
+                                                        exit={{ opacity: 0 }}
+                                                        transition={{ duration: 0.3 }}
+                                                    >
+                                                        <h1 className={`font-medium text-lg ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                                                            Redirecting to {selectedProvider}
+                                                        </h1>
+                                                        <p className={`font-light text-xs ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                                                            You will be automatically logged in upon completing verification
+                                                        </p>
+                                                    </motion.div>
+                                                ) : (
+                                                    <motion.div
+                                                        initial={{ opacity: 0, scale: 0.8 }}
+                                                        animate={{ opacity: 1, scale: 1 }}
+                                                        transition={{ duration: 0.5, ease: "easeOut" }}
+                                                        className={`flex flex-col items-center ${isDarkMode ? 'text-gray-200' : 'text-green-600'}`}
+                                                    >
+                                                        <div className={`${isDarkMode ? "bg-gray-800" : "bg-white"} rounded-full p-2 shadow-lg`}>
+                                                            <CheckMarkIcon />
+                                                        </div>
+                                                        <h1 className="font-semibold text-lg mt-4">Verified</h1>
+                                                    </motion.div>
+                                                )}
+                                            </AnimatePresence>
                                             <AnimatePresence>
                                                 {showManualRedirect && (
                                                     <motion.p
-                                                        initial={{ opacity: 0, y: 10 }}
+                                                        initial={{ opacity: 0, y: 20 }}
                                                         animate={{ opacity: 1, y: 0 }}
                                                         exit={{ opacity: 0, y: -10 }}
                                                         transition={{ duration: 0.3 }}
@@ -109,14 +152,14 @@ export default function Login(): JSX.Element {
                                                     </motion.p>
                                                 )}
                                             </AnimatePresence>
-                                        </div>
+                                        </motion.div>
                                     </motion.div>
                                 )}
                             </AnimatePresence>
                         </div>
                     </CardContent>
                     <CardFooter className="flex flex-col space-y-4">
-                        <SupportLink isDarkMode={isDarkMode} />
+                        <Footer isDarkMode={isDarkMode} />
                     </CardFooter>
                 </Card>
             </motion.div>
