@@ -1,29 +1,17 @@
 "use client";
 
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Button } from "@/components/UI/button";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/UI/card";
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Card, CardContent, CardFooter } from "@/components/UI/card";
 import { Google, Microsoft } from "@mui/icons-material";
-import { BrandingProps } from './IBranding';
 import { AlertMessage, AlertType } from '../AlertMessage';
+import { BrandingProps } from './Interfaces/IBranding';
+import { clientBranding } from '@/config';
+import LoginHeader from './Header';
+import LoginOptions from './LoginOptions';
+import SupportLink from './SupportLink';
 
-export const DefaultBranding: BrandingProps = {
-    companyName: "Your Company",
-    logoUrl: "placeholder.webp",
-    primaryColor: "#3b82f6",
-    secondaryColor: "#10b981",
-    theme: 'light',
-    login: {
-        label: "Sign in to your account",
-        options: [
-            { name: "Google", icon: Google },
-            { name: "Microsoft", icon: Microsoft }
-        ]
-    }
-};
-
-const darkenColor = (color: string, amount: number) => {
+const darkenColor = (color: string, amount: number): string => {
     const hex = color.replace('#', '');
     const rgb = parseInt(hex, 16);
     const r = Math.max(0, (rgb >> 16) - amount);
@@ -32,22 +20,33 @@ const darkenColor = (color: string, amount: number) => {
     return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
 };
 
-export default function Login({ branding = DefaultBranding }: { branding?: BrandingProps }) {
+export default function Login(): JSX.Element {
     const [alertState, setAlertState] = useState<{ type: AlertType; message: string } | null>(null);
+    const [isRedirecting, setIsRedirecting] = useState(false);
+    const [selectedProvider, setSelectedProvider] = useState<string | null>(null);
+    const [showManualRedirect, setShowManualRedirect] = useState(false);
 
-    const isDarkMode = branding.theme === 'dark';
-    const darkenedPrimary = isDarkMode ? darkenColor(branding.primaryColor, 180) : darkenColor(branding.primaryColor, 50);
-    const darkenedSecondary = isDarkMode ? darkenColor(branding.secondaryColor, 180) : darkenColor(branding.secondaryColor, 50);
+    const isDarkMode = clientBranding.theme.type === 'dark';
+    const darkenedPrimary = isDarkMode ? darkenColor(clientBranding.primaryColor, 175) : darkenColor(clientBranding.primaryColor, 50);
+    const darkenedSecondary = isDarkMode ? darkenColor(clientBranding.secondaryColor, 175) : darkenColor(clientBranding.secondaryColor, 50);
 
-    const handleLogin = (provider: string) => {
-        // Simulate different alert types for demonstration purposes
-        const alertTypes: AlertType[] = ['error', 'success', 'info', 'warning'];
-        const randomType = alertTypes[Math.floor(Math.random() * alertTypes.length)];
-        setAlertState({
-            type: randomType,
-            message: `Login with ${provider} ${randomType === 'success' ? 'successful' : randomType === 'error' ? 'failed' : 'in progress'}. ${randomType === 'info' ? 'Please wait...' : randomType === 'error' ? 'Please try again.' : ''}`
-        });
-        // In a real application, you would handle the login logic here
+    const handleLogin = (provider: string): void => {
+        setSelectedProvider(provider);
+        setIsRedirecting(true);
+		
+        // Simulating a redirect delay
+        setTimeout(() => {
+            // Implement your actual redirect logic here
+            console.log(`Redirecting to ${provider} login...`);
+
+            // If the redirect doesn't happen, show the manual redirect option
+            setShowManualRedirect(true);
+        }, 3000);
+    };
+
+    const handleManualRedirect = () => {
+        // Implement your manual redirect logic here
+        console.log(`Manually redirecting to ${selectedProvider} login...`);
     };
 
     return (
@@ -61,59 +60,83 @@ export default function Login({ branding = DefaultBranding }: { branding?: Brand
             
             <motion.div 
                 className="w-full max-w-md relative z-10"
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 65 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
+                transition={{ duration: 0.6 }}
             >
-                <Card className={`${isDarkMode ? 'bg-gray-900/80' : 'bg-white/70'} border-gray-200/50 shadow-xl backdrop-blur-[2px]`}>
-                    <CardHeader className="flex items-center space-y-1 text-center">
-                        <div className="w-40 h-28 flex items-center justify-center">
-                            <img 
-                                className="max-w-full max-h-full object-contain" 
-                                src={branding.logoUrl} 
-                                alt={`${branding.companyName} logo`}
-                            />
-                        </div>
-                        <CardTitle className={`text-xl ${isDarkMode ? 'text-gray-100' : 'text-gray-800'}`}>
-                            <span className="font-normal">Welcome to </span>
-                            <span className="font-semibold">{branding.companyName}</span>
-                        </CardTitle>
-                        <CardDescription className={isDarkMode ? 'text-gray-400' : 'text-gray-600'}>{branding.login.label}</CardDescription>
-                    </CardHeader>
+                <Card className={`${isDarkMode ? 'bg-gray-900/80' : 'bg-white/70'} ${isDarkMode ? 'border-gray-500/50' : 'border-gray-200/50'} shadow-xl backdrop-blur-[2px] relative`}>
+                    <LoginHeader 
+                        companyName={clientBranding.companyName}
+                        logoUrl={clientBranding.logoUrl}
+                        label={clientBranding.login.label}
+                        isDarkMode={isDarkMode}
+                    />
                     <CardContent className="space-y-4">
                         {alertState && <AlertMessage type={alertState.type} message={alertState.message} />}
-                        {branding.login.options && branding.login.options.length > 0 ? (
-                            <div className="grid grid-cols-2 gap-4">
-                                {branding.login.options.map((option, index) => {
-                                    const IconComponent = option.icon;
-                                    return (
-                                        <Button 
-                                            key={index}
-                                            className={`${isDarkMode ? 'bg-gray-800 hover:bg-gray-700 text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-800'} border-gray-300 transition-colors duration-200`}
-                                            onClick={() => handleLogin(option.name)}
-                                        >
-                                            <IconComponent className="h-5 w-5 mr-2" />
-                                            <span className="font-light">{option.name}</span>
-                                        </Button>
-                                    );
-                                })}
-                            </div>
-                        ) : (
-                            <p className={`text-center ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>No login options available. Please contact the administrator.</p>
-                        )}
+                        <div className="relative">
+                            <LoginOptions 
+                                options={clientBranding.login.options}
+                                isDarkMode={isDarkMode}
+                                onLogin={handleLogin}
+                            />
+                            <AnimatePresence>
+                                {isRedirecting && (
+                                    <motion.div
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0 }}
+                                        transition={{ duration: 0.3 }}
+                                        className={`absolute inset-0 flex items-center justify-center ${isDarkMode ? 'bg-gray-900/90' : 'bg-white/50'} backdrop-blur-lg rounded-lg`}
+                                    >
+                                        <div className="text-center">
+                                            <h1 className={`font-medium text-lg ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                                                Redirecting to {selectedProvider}
+                                            </h1>
+                                            <p className={`font-light text-xs ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                                                You will be automatically logged in upon completing verification
+                                            </p>
+                                            <AnimatePresence>
+                                                {showManualRedirect && (
+                                                    <motion.p
+                                                        initial={{ opacity: 0, y: 10 }}
+                                                        animate={{ opacity: 1, y: 0 }}
+                                                        exit={{ opacity: 0, y: -10 }}
+                                                        transition={{ duration: 0.3 }}
+                                                        className={`mt-4 font-extralight cursor-pointer text-sm ${isDarkMode ? 'text-blue-400 hover:text-blue-300' : 'text-blue-600 hover:text-blue-500'}`}
+                                                        onClick={handleManualRedirect}
+                                                    >
+                                                        Click here to manually redirect
+                                                    </motion.p>
+                                                )}
+                                            </AnimatePresence>
+                                        </div>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
+                        </div>
                     </CardContent>
                     <CardFooter className="flex flex-col space-y-4">
-                        <div className="text-sm text-center">
-                            <p className={isDarkMode ? 'text-gray-500' : 'text-gray-600'}>
-                                Can't log in?{" "}
-                                <a href="#" className={`font-medium ${isDarkMode ? 'text-blue-300 hover:text-blue-200' : 'text-blue-600 hover:text-blue-500'} transition-colors`}>
-                                    Contact support
-                                </a>
-                            </p>
-                        </div>
+                        <SupportLink isDarkMode={isDarkMode} />
                     </CardFooter>
                 </Card>
             </motion.div>
         </div>
     );
 }
+
+export const DefaultBranding: BrandingProps = {
+    companyName: "Your Company",
+    logoUrl: "placeholder.webp",
+    primaryColor: "#3b82f6",
+    secondaryColor: "#10b981",
+    theme: {
+        type: 'light',
+    },
+    login: {
+        label: "Sign in to your account",
+        options: [
+            { name: "Google", icon: Google },
+            { name: "Microsoft", icon: Microsoft }
+        ]
+    }
+};
