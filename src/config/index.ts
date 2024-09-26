@@ -1,6 +1,6 @@
 import { Google, Microsoft, Apple, GitHub } from "@mui/icons-material";
 import { BrandingProps } from "@/pages/Login/Interfaces/IBranding";
-import { RealmEnumsProps } from "./Interfaces/IEnums";
+import { RealmEnumsProps } from "@/interfaces/IEnums";
 
 export const realmEnums: RealmEnumsProps = {
 	loginStates: {
@@ -10,7 +10,7 @@ export const realmEnums: RealmEnumsProps = {
 	}
 }
 
-export const realmClientBranding: BrandingProps = {
+export const RealmClientBranding: BrandingProps = {
     companyName: "Your Company",
     logoUrl: "placeholder.webp",
     primaryColor: "#b6b6b6",

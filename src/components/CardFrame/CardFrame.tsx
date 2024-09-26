@@ -3,16 +3,16 @@ import { motion } from 'framer-motion';
 import { Card } from "../UI/card";
 import { LayoutProps } from "./Interfaces/ICardFrame";
 import { DarkenColor } from "@/utils/Colors";
-import { realmClientBranding } from "@/config";
+import { RealmClientBranding } from "@/config";
 
-export const CardFrame: React.FC<LayoutProps> = ({ children }) => {
-    const isDarkMode = realmClientBranding.theme.type === 'dark';
+export const RealmCardFrame: React.FC<LayoutProps> = ({ children }) => {
+    const isDarkMode = RealmClientBranding.theme.type === 'dark';
     const darkenedPrimary = isDarkMode ? 
-								DarkenColor(realmClientBranding.primaryColor, 175) : 
-								DarkenColor(realmClientBranding.primaryColor, 50);
+								DarkenColor(RealmClientBranding.primaryColor, 175) : 
+								DarkenColor(RealmClientBranding.primaryColor, 50);
     const darkenedSecondary = isDarkMode ? 
-								DarkenColor(realmClientBranding.secondaryColor, 175) : 
-								DarkenColor(realmClientBranding.secondaryColor, 50);
+								DarkenColor(RealmClientBranding.secondaryColor, 175) : 
+								DarkenColor(RealmClientBranding.secondaryColor, 50);
 
     return (
         <div className={`min-h-screen flex items-center justify-center p-4 relative overflow-hidden ${isDarkMode ? 'dark' : ''}`}
@@ -37,4 +37,4 @@ export const CardFrame: React.FC<LayoutProps> = ({ children }) => {
     );
 };
 
-export default CardFrame;
+export default RealmCardFrame;

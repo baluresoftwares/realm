@@ -4,20 +4,20 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CardContent, CardFooter } from "@/components/UI/card";
 import { AlertMessage, AlertType } from '@/components/AlertMessage';
-import { realmClientBranding, realmEnums } from '@/config';
-import LoginHeader from './Header';
-import LoginOptions from './LoginOptions';
-import Footer from './Footer';
-import CardFrame from '@/components/CardFrame/CardFrame';
-import { AnimatedIcon } from '@/components/AnimatedIcon/AnimatedIcon';
+import { RealmClientBranding, realmEnums } from '@/config';
+import RealmCardHeader from '@/components/CardHeader/CardHeader';
+import Content from './Content';
+import RealmCardFooter from '@/components/CardFooter/CardFooter';
+import { RealmAnimatedIcon } from '@/components/AnimatedIcon/AnimatedIcon';
 import { LoginState } from './Interfaces/ILogin';
+import RealmCardFrame from '@/components/CardFrame/CardFrame';
 
 export default function Login(): JSX.Element {
     const [alertState, setAlertState] = useState<{ type: AlertType; message: string } | null>(null);
 	const [loginState, setLoginState] = useState<LoginState>(realmEnums.loginStates.initial);
     const [selectedProvider, setSelectedProvider] = useState<string | null>(null);
 
-    const isDarkMode = realmClientBranding.theme.type === 'dark';
+    const isDarkMode = RealmClientBranding.theme.type === 'dark';
 
     const handleLogin = (provider: string): void => {
         setSelectedProvider(provider);
@@ -34,8 +34,8 @@ export default function Login(): JSX.Element {
 		switch (loginState) {
 			case (realmEnums.loginStates.initial):
 				return (
-					<LoginOptions 
-						options={realmClientBranding.login.options}
+					<Content 
+						options={RealmClientBranding.login.options}
 						isDarkMode={isDarkMode}
 						onLogin={handleLogin}
 					/>
@@ -101,7 +101,7 @@ export default function Login(): JSX.Element {
 									className={`flex flex-col items-center ${isDarkMode ? 'text-gray-200' : 'text-green-600'}`}
 								>
 									<div className={`${isDarkMode ? "bg-gray-800" : "bg-white"} rounded-full p-3 shadow-lg mb-4`}>
-										<AnimatedIcon paths={checkMarkPaths} />
+										<RealmAnimatedIcon paths={checkMarkPaths} />
 									</div>
 									<h2 className="font-semibold text-xl">Verified</h2>
 									<p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
@@ -116,12 +116,10 @@ export default function Login(): JSX.Element {
 	};
 
     return (
-        <CardFrame>
-            <LoginHeader 
-                companyName={realmClientBranding.companyName}
-                logoUrl={realmClientBranding.logoUrl}
-                label={realmClientBranding.login.label}
-                isDarkMode={isDarkMode}
+        <RealmCardFrame>
+            <RealmCardHeader 
+                title={<>Welcome to <span className="font-semibold">{RealmClientBranding.companyName}</span></>}
+				description="Choose your preferred method to sign in"
             />
             <CardContent className="space-y-6">
                 {alertState && <AlertMessage type={alertState.type} message={alertState.message} />}
@@ -130,8 +128,16 @@ export default function Login(): JSX.Element {
                 </AnimatePresence>
             </CardContent>
             <CardFooter className="flex flex-col space-y-4">
-                <Footer isDarkMode={isDarkMode} />
+                <RealmCardFooter 
+					isDarkMode={isDarkMode} 
+					companyName="Balure Softwares"
+					links={[
+						{ text: "Contact Support", href: "/support" },
+						{ text: "Privacy Policy", href: "/privacy" },
+						{ text: "Terms of Service", href: "/terms" }
+					]}
+				/>
             </CardFooter>
-        </CardFrame>
+        </RealmCardFrame>
     );
 }

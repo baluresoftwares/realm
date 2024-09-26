@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "@/css/globals.css";
 
-import PageFrame from "@/components/PageFrame/PageFrame";
+import PageFrame from "@/components/RealmPageFrame/RealmPageFrame";
 import { AuthProvider } from "@/context/AuthContext/AuthContext";
 
 const inter = Inter({ subsets: ["latin"] });

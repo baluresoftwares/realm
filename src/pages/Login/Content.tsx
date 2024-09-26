@@ -2,7 +2,7 @@ import React from 'react';
 import { LoginOptionsProps } from "./Interfaces/ILogin";
 import { Button } from '@/components/UI/button';
 
-const LoginOptions: React.FC<LoginOptionsProps> = ({ options, isDarkMode, onLogin }) => {
+const Content: React.FC<LoginOptionsProps> = ({ options, isDarkMode, onLogin }) => {
     if (!options || options.length === 0) {
         return (
             <p className={`text-center font-medium text-xs ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
@@ -30,4 +30,4 @@ const LoginOptions: React.FC<LoginOptionsProps> = ({ options, isDarkMode, onLogi
     );
 };
 
-export default LoginOptions;
+export default Content;
