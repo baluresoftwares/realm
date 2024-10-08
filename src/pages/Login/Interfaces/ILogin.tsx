@@ -1,8 +1,8 @@
 import { SvgIconProps } from '@mui/material';
 import { BrandingProps } from './IBranding';
-import { realmEnums } from '@/config';
+import { RealmEnums } from '@/config';
 
-export type LoginState = typeof realmEnums.loginStates[keyof typeof realmEnums.loginStates];
+export type LoginState = typeof RealmEnums.loginStates[keyof typeof RealmEnums.loginStates];
 
 export interface LoginOption {
     name: string;

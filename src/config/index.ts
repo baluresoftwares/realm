@@ -2,19 +2,20 @@ import { Google, Microsoft, Apple, GitHub } from "@mui/icons-material";
 import { BrandingProps } from "@/pages/Login/Interfaces/IBranding";
 import { RealmEnumsProps } from "@/interfaces/IEnums";
 
-export const realmEnums: RealmEnumsProps = {
+export const RealmEnums: RealmEnumsProps = {
 	loginStates: {
 		initial: "initial",
 		redirecting: "redirecting",
-		verified: "verified"
+		verified: "verified",
+		denied: "denied"
 	}
 }
 
 export const RealmClientBranding: BrandingProps = {
     companyName: "Your Company",
     logoUrl: "placeholder.webp",
-    primaryColor: "#b6b6b6",
-    secondaryColor: "#747474",
+    primaryColor: "#bbbbbb",
+    secondaryColor: "#8a8a8a",
     theme: {
 		type: 'light'
 	},
