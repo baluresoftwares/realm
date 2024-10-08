@@ -13,13 +13,6 @@ const RealmPageHeader: React.FC<HeaderProps> = ({ toggleSidebar }) => {
 					alt="" 
 				/>
 			</button>
-            <div className="flex items-center space-x-4">
-                <Bell className="text-gray-600" />
-                <div className="flex items-center">
-                    <span className="mr-2">Renee McKelvey</span>
-                    <div className="w-8 h-8 bg-gray-300 rounded-full"></div>
-                </div>
-            </div>
         </header>
     );
 };
